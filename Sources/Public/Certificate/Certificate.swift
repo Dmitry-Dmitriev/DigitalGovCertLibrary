@@ -17,3 +17,11 @@ import Foundation
         self.certificate = certificate
     }
 }
+
+extension Certificate: Decodable {
+    public convenience init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let data = try container.decode(Data.self)
+        try self.init(data: data)
+    }
+}

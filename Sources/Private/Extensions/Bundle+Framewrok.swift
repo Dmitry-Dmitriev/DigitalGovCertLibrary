@@ -12,7 +12,7 @@ extension Bundle {
 
     private static let moduleName = "DigitalGovCertLibrary"
     private static let resourcePath = "DGCLResources"
-    // See: digital.gov.rus.cert.support.podspec, s.resource_bundles
+    // See: DigitalGovCertLibrary.podspec, s.resource_bundles
     private static let resourceExt = "bundle"
 
     static var resourcesBundle: Bundle {

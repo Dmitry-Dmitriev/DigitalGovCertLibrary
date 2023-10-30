@@ -11,7 +11,7 @@ import Foundation
 // MARK: - CustomNSError
 extension DGError: CustomNSError {
     public static var errorDomain: String { return
-        String(describing: Self.self)
+        String(Self.self)
     }
 
     public var errorCode: Int {

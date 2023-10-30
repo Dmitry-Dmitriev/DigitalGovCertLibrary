@@ -22,7 +22,7 @@ extension CertificateFile {
     }
 
     var fullFileName: String {
-        certName + "." + certExtension.string
+        certName + .dot + certExtension.string
     }
 
     var fileLocation: String {

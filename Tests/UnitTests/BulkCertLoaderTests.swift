@@ -1,10 +1,3 @@
-//
-//  digital_gov_rus_cert_supportTests.swift
-//  digital.gov.rus.cert.supportTests
-//
-//  Created by dmitry.dmitriev on 04.10.2023.
-//  Copyright © 2023 VK. All rights reserved.
-//
 
 import XCTest
 @testable import DigitalGovCertLibrary

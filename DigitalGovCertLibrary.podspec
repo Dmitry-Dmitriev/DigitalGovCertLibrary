@@ -23,7 +23,6 @@ Pod::Spec.new do |s|
     ss.source_files = 'Sources/Public/**/*.{h,m,swift}'
   end
   s.test_spec 'DGCLTests' do |test_spec|
-    test_spec.requires_app_host = true
     test_spec.source_files = 'Tests/**/*.{h,m,swift}'
   end
 #  s.vendored_frameworks = 'digital.gov.rus.cert.support.xcframework'

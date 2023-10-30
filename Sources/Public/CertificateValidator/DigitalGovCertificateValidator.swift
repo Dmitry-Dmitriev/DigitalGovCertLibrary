@@ -10,6 +10,8 @@ import Foundation
 
 @objc(DGCertificateValidator)
 public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationChallengeValidator {
+
+    
     @objc public static let shared = DigitalGovCertificateValidator(certLoader: .digitalGov)
 
     private let certificateValidator: CertificateValidator
@@ -28,28 +30,31 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
         certificateValidator.checkValidity(challenge: challenge, completionHandler: completionHandler)
     }
 
-    @available(iOS 13, *)
-    @available(OSX 10.15, *)
-    func loadItems(challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-        return await withCheckedContinuation { continuation in
-            checkValidity(challenge: challenge) { disposition, credentials in
-                continuation.resume(returning: (disposition, credentials))
-            }
-        }
-    }
+//    @available(iOS 13.0, *)
+//    @available(OSX 10.15, *)
+//    @objc(checkValidityWithChallenge: completionHandler:)
+//    public func checkValidity(challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+//        return await withCheckedContinuation { continuation in
+//            checkValidity(challenge: challenge) { disposition, credentials in
+//                continuation.resume(returning: (disposition, credentials))
+//            }
+//        }
+//        return await certificateValidator.checkValidity(challenge: challenge)
+//    }
 }
 
+@available(iOS 13.0, *)
 final class Tet: NSObject, URLSessionDelegate {
-    func urlSession(_ session: URLSession,
-                    didReceive challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-        guard let trust = challenge.protectionSpace.serverTrust else {
-            return (.performDefaultHandling, nil)
-        }
-
-        let isTrusted = "test" == "test1" ? true : false
-        let authChallengeDisposition: URLSession.AuthChallengeDisposition = isTrusted ? .useCredential : .performDefaultHandling
-        let credentials: URLCredential? = isTrusted ? .init(trust: trust) : nil
-
-        return (authChallengeDisposition, credentials)
-    }
+//    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+//        return await DigitalGovCertificateValidator.shared.checkValidity(challenge: challenge)
+//    }
+    
+//    func urlSession1(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+//        Task.detached { [weak self] in
+//            let result = await self?.urlSession(session, didReceive: challenge)
+//            let disposition = result?.0 ?? .performDefaultHandling
+//            let credentials = result?.1
+//            completionHandler(disposition, credentials)
+//        }
+//    }
 }

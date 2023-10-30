@@ -27,9 +27,9 @@ let package = Package(
                     .copy("Certs/russiantrustedrootca.cer"),
                     .copy("Certs/russiantrustedsubca.cer"),
                 ]),
-//        .testTarget(name: "UnitTests",
-//                    dependencies: ["DigitalGovCertLibrary"],
-//                    path: "Tests")
+        .testTarget(name: "UnitTests",
+                    dependencies: ["DigitalGovCertLibrary"],
+                    path: "Tests")
         ]
 )
 

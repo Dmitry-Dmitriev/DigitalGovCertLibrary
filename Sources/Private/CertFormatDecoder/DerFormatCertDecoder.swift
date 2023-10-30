@@ -10,15 +10,21 @@ import Foundation
 
 final class DerFormatCertDecoder: NSObject, CertFormatDecoder {
     func decode(certificateData certData: Data) throws -> Certificate {
-        guard let certificate = SecCertificateCreateWithData(nil, certData as CFData) else {
-            throw DGError.certDecoding(name: .empty, atPath: .empty)
-        }
-
-        return .init(certificate: certificate)
+        return try Certificate(data: certData)
     }
 
     func decode(certificateFile: CertificateFile) throws -> Certificate {
         let certData = try certificateFile.load()
         return try evaluate(expression: decode(certificateData: certData), onFile: certificateFile)
+    }
+}
+
+protocol DerDecoder {
+    func decode(derData: Data) throws -> Certificate
+}
+
+extension DerDecoder {
+    func decode(derData: Data) throws -> Certificate {
+        return try Certificate(data: derData)
     }
 }
