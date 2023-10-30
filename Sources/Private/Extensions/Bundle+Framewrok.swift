@@ -1,10 +1,4 @@
-//
-//  Bundle+Framewrok.swift
-//  digital.gov.rus.cert.support
-//
-//  Created by dmitry.dmitriev on 03.10.2023.
-//  Copyright © 2023 VK. All rights reserved.
-//
+
 
 import Foundation
 
@@ -31,6 +25,6 @@ extension Bundle {
     }
 
     private static var customFileFrameworkBundle: Bundle {
-        return Bundle(for: CertificateFile.self)
+        return Bundle(for: Certificate.self)
     }
 }

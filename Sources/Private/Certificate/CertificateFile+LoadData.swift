@@ -1,34 +1,28 @@
+
+
+//import Foundation
 //
-//  CertificateFile+LoadData.swift
-//  digital.gov.rus.cert.support
+//extension CertificateFile {
+//    func load() throws -> Data {
+//        let url = try makeURL()
+//        let data = try loadData(atUrl: url)
+//        return data
+//    }
 //
-//  Created by dmitry.dmitriev on 11.10.2023.
-//  Copyright © 2023 VK. All rights reserved.
+//    func makeURL() throws -> URL {
+//        guard let certUrl = certBundle.url(forResource: certName, withExtension: certExtension.string)
+//        else { throw missingFileError }
 //
-
-import Foundation
-
-extension CertificateFile {
-    func load() throws -> Data {
-        let url = try makeURL()
-        let data = try loadData(atUrl: url)
-        return data
-    }
-
-    func makeURL() throws -> URL {
-        guard let certUrl = certBundle.url(forResource: certName, withExtension: certExtension.string)
-        else { throw missingFileError }
-
-        return certUrl
-    }
-}
-
-private extension CertificateFile {
-    func loadData(atUrl url: URL) throws -> Data {
-        do {
-            return try Data(contentsOf: url)
-        } catch {
-            throw readingFileError(reason: error.localizedDescription)
-        }
-    }
-}
+//        return certUrl
+//    }
+//}
+//
+//private extension CertificateFile {
+//    func loadData(atUrl url: URL) throws -> Data {
+//        do {
+//            return try Data(contentsOf: url)
+//        } catch {
+//            throw readingFileError(reason: error.localizedDescription)
+//        }
+//    }
+//}
