@@ -2,19 +2,22 @@
 import Foundation
 
 public enum DGError: Error {
-    case missingFile(name: String, atPath: String)
-    case certDecoding(name: String, atPath: String)
-    case certReading(name: String, atPath: String, reason: String)
+    case file(_ error: DGError.File)
+    case network(_ error: DGError.Network)
+    case converting(_ error: DGError.Converting)
+    case certificate(_ error: DGError.Certificate)
 }
 
-extension DGError {
+public extension DGError {
     enum File: Error {
-        case reading
-        case missing
+        case reading(name: String, atPath: String, reason: String)
+        case missing(name: String, atPath: String)
+        case decoding(name: String, atPath: String, reason: String)
     }
-    
+
     enum Network: Error {
-        case request(_ req: URLRequest, error: Error)
+        case request(_ req: WebRequestProvider, error: Error)
+        case response(error: DGError.Network.Response)
     }
 
     enum Converting {
@@ -25,35 +28,111 @@ extension DGError {
     
     enum Certificate: Error {
         case creation(data: Data)
-        case validationError(_ error: Error)
-        case validationStatus(_ status: OSStatus)
+        case validation(_ error: DGError.Certificate.Validation)
     }
 }
 
-extension DGError.Certificate {
+public extension DGError.Certificate {
     enum Validation: Error {
         case error(_ error: Error)
-        case status(_ status: OSStatus)
-    }
-}
-extension DGError.Certificate {
-    enum Format: Error {
-        case unsupported
+        case status(_ status: OSStatus, secResult: SecTrustResultType)
     }
 }
 
-extension DGError.Network {
+public extension DGError.Network {
     enum Response: Error {
         case unexpected
     }
 }
 
-func test() {
-    let aaa = "test1" == "test" ? DGError.Certificate.creation(data: .init()): DGError.Certificate.validationStatus(errSecSuccess)
-    switch aaa {
-    case let .validationError(error): print(error.localizedDescription)
-         print("")
-    default:
-        break
+extension DGError.File: CustomNSError {
+    public var errorCode: Int {
+        switch self {
+        case .reading: return 1 * multiplier
+        case .missing: return 2 * multiplier
+        case .decoding: return 3 * multiplier
+        }
+    }
+}
+
+extension DGError.Network: CustomNSError {
+    public var errorCode: Int {
+        switch self {
+        case .request: return 1 * multiplier
+        case let .response(error): return 2 * multiplier + error.errorCode
+        }
+    }
+}
+extension DGError.Network.Response: CustomNSError {
+    public var errorCode: Int {
+        switch self {
+        case .unexpected: return 1 * multiplier
+        }
+    }
+}
+extension DGError.Converting: CustomNSError {
+    public var errorCode: Int {
+        switch self {
+        case .stringFromData: return 1 * multiplier
+        case .dataFromBase64: return 2 * multiplier
+        case .urlFromString: return 3 * multiplier
+        }
+    }
+}
+extension DGError.Certificate: CustomNSError {
+    public var errorCode: Int {
+        switch self {
+        case .creation: return 1 * multiplier
+        case let .validation(error): return 2 * multiplier + error.errorCode
+        }
+    }
+}
+extension DGError.Certificate.Validation: CustomNSError {
+    public var errorCode: Int {
+        switch self {
+        case .error: return 1 * multiplier
+        case .status: return 2 * multiplier
+        }
+    }
+}
+
+extension DGError: GlobalLevelErrorCode {}
+
+extension DGError.File: SecondLevelErrorCode {}
+extension DGError.Network: SecondLevelErrorCode {}
+extension DGError.Converting: SecondLevelErrorCode {}
+extension DGError.Certificate: SecondLevelErrorCode {}
+
+extension DGError.Network.Response: ThirdLevelErrorCode {}
+extension DGError.Certificate.Validation: ThirdLevelErrorCode {}
+
+
+protocol GlobalLevelErrorCode {
+    var multiplier: Int { get }
+}
+
+extension GlobalLevelErrorCode {
+    var multiplier: Int {
+        return Int(1e3)
+    }
+}
+
+protocol SecondLevelErrorCode {
+    var multiplier: Int { get }
+}
+
+extension SecondLevelErrorCode {
+    var multiplier: Int {
+        return Int(1e2)
+    }
+}
+
+protocol ThirdLevelErrorCode {
+    var multiplier: Int { get }
+}
+
+extension ThirdLevelErrorCode {
+    var multiplier: Int {
+        return Int(1e1)
     }
 }

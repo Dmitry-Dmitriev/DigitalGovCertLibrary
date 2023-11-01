@@ -9,6 +9,7 @@ import Foundation
 
     internal init(certificate: SecCertificate) {
         self.certificate = certificate
+        super.init()
     }
 }
 
@@ -16,6 +17,8 @@ extension Certificate: Decodable {
     public convenience init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let data = try container.decode(Data.self)
-        try self.init(data: data)
+        let certDecoder: UniversalDecoder = UniversalCertDecoder()
+        let cert = try certDecoder.decode(certificateData: data)
+        self.init(certificate: cert.certificate)
     }
 }

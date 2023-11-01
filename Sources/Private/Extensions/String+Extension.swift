@@ -6,6 +6,8 @@ extension String {
     static let linebreak = "\n"
     static let comma = ","
     static let dot = "."
+    static let doubleQuote = "\""
+    static let singleQuote = "'"
 }
 
 extension String {

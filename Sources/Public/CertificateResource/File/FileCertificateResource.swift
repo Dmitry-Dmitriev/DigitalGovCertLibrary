@@ -1,24 +1,25 @@
 
 import Foundation
 
-final class FileCertificateResource: NSObject, CertificateResource & LoaderProvider {
+@objc public final class FileCertificateResource: NSObject, CertificateLoadableResource {
     let certBundle: Bundle
     let certName: String
     let certExtension: CertExtension
     
-    init(certBundle: Bundle, certName: String, certExtension: CertExtension) {
+    public init(certBundle: Bundle, certName: String, certExtension: CertExtension) {
         self.certBundle = certBundle
         self.certName = certName
         self.certExtension = certExtension
+        super.init()
     }
     
-    func makeURL() throws -> URL {
+    public func resourceURL() throws -> URL {
         guard let certUrl = certBundle.url(forResource: certName, withExtension: certExtension.string)
         else { throw missingFileError }
         return certUrl
     }
     
-    override var hash: Int {
+    public override var hash: Int {
         var hasher = Hasher()
         hasher.combine(certBundle)
         hasher.combine(certName)
@@ -26,23 +27,26 @@ final class FileCertificateResource: NSObject, CertificateResource & LoaderProvi
         return hasher.finalize()
     }
     
-    func loader(with queue: DispatchQueue) -> CertificateLoader {
-        return OnQueueCertificateLoader(queue: queue, closure: FileCertificateLoader(resource: self))
+    public var certificateLoader: CertificateLoader {
+        return FileCertificateLoader(resource: self)
     }
 }
 
 
 private extension FileCertificateResource {
     var missingFileError: DGError {
-        DGError.missingFile(name: fullFileName, atPath: fileLocation)
+        let fileError = DGError.File.missing(name: fullFileName, atPath: fileLocation)
+        let dgError = DGError.file(fileError)
+        return dgError
     }
-    var decodingFileError: DGError {
-        DGError.certDecoding(name: fullFileName,
-                                   atPath: fileLocation)
+    
+    func decodingFileError(reason: String) -> Error {
+        DGError.File.decoding(name: fullFileName,
+                              atPath: fileLocation, reason: reason)
 
     }
-    func readingFileError(reason: String) -> DGError {
-        DGError.certReading(name: fullFileName, atPath: fileLocation, reason: reason)
+    func readingFileError(reason: String) -> Error {
+        DGError.File.reading(name: fullFileName, atPath: fileLocation, reason: reason)
     }
 
     var fullFileName: String {

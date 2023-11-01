@@ -18,3 +18,12 @@ extension CertExtension {
         }
     }
 }
+
+
+extension CertExtension: CaseIterable {}
+
+extension CertExtension {
+    static var list: [String] {
+        return allCases.map { $0.string }
+    }
+}

@@ -1,8 +1,8 @@
 
 import Foundation
 
-final class BulkCertificatesLoader: ManagableLoader {
-    private let resources: [CertificateResource & LoaderProvider]
+final class BulkCertificatesLoader: Loader {
+    private let resources: [CertificateLoadableResource]
     
     convenience init(fileResources: [FileCertificateResource]) {
         self.init(resources: fileResources)
@@ -12,39 +12,41 @@ final class BulkCertificatesLoader: ManagableLoader {
         self.init(resources: remoteResources)
     }
     
-    private init(resources: [CertificateResource & LoaderProvider]) {
+    private init(resources: [CertificateLoadableResource]) {
         self.resources = resources
     }
 
     func load(completion: @escaping (BulkLoadResult) -> Void) {
         let group = DispatchGroup()
-        let syncqueue = DispatchQueue.serial
+        let synchronizedQueue = DispatchQueue.serial
         let workQueue = DispatchQueue.concurrent
         
         var array = [Certificate]()
         var failResources: [BulkErrorLoadItem] = []
        
         resources.forEach { resource in
-            let loader = resource.loader(with: workQueue)
+            let certificateLoader = OnQueueCertificateLoader(queue: workQueue,
+                                                             makeClosure: resource.certificateLoader)
             group.enter()
-            loader.load { result in
+            certificateLoader.load { result in
                 do {
                     let cert = try result.get()
-                    syncqueue.async {
+                    synchronizedQueue.async {
                         array.append(cert)
+                        group.leave()
                     }
                 }
                 catch {
-                    let item = BulkErrorLoadItem(certificateResource: resource, error: error)
-                    syncqueue.async {
+                    let item = BulkErrorLoadItem(certificateResource: resource , error: error)
+                    synchronizedQueue.async {
                         failResources.append(item)
+                        group.leave()
                     }
                 }
-                group.leave()
             }
         }
 
-        group.notify(queue: syncqueue) {
+        group.notify(queue: synchronizedQueue) {
             let result = BulkLoadResult(certs: array,
                                         failResources: failResources)
             completion(result)

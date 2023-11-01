@@ -8,7 +8,7 @@ protocol PemDecoder {
 extension PemDecoder {
     func decode(pemData: Data) throws -> Certificate {
         guard let fileContent = String(data: pemData, encoding: .utf8) else {
-            throw DGError.certDecoding(name: .empty, atPath: .empty)
+            throw DGError.Converting.stringFromData(pemData)
         }
 
         var base64 = fileContent
@@ -23,7 +23,7 @@ extension PemDecoder {
         }
 
         guard let certData = Data(base64Encoded: base64, options: .ignoreUnknownCharacters) else {
-            throw DGError.certDecoding(name: .empty, atPath: .empty)
+            throw DGError.Converting.dataFromBase64(base64)
         }
 
         return try Certificate(data: certData)

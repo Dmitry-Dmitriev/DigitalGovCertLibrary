@@ -1,7 +1,7 @@
 
 import Foundation
 
-protocol ManagableLoader: AnyObject {
+protocol Loader: AnyObject {
     associatedtype Output: LoadingItem
     func load(completion: @escaping (Output) -> Void)
 }

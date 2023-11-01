@@ -3,22 +3,23 @@ import Foundation
 
 @objc(DGCertificateValidator)
 public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationChallengeValidator {    
-    private let loader: LoadingManager<BulkCertificatesLoader>
+    private let loader: OneTimeLoader<BulkCertificatesLoader>
     
     let shared = DigitalGovCertificateValidator(fileCertificates: .digitalGov)
 
     convenience init(fileCertificates: [FileCertificateResource]) {
         let bulkLoader = BulkCertificatesLoader(fileResources: fileCertificates)
-        self.init(loader: bulkLoader)
+        self.init(certificateLoader: bulkLoader)
     }
     
     convenience init(remoteCertificates: [RemoteCertificateResource]) {
         let bulkLoader = BulkCertificatesLoader(remoteResources: remoteCertificates)
-        self.init(loader: bulkLoader)
+        self.init(certificateLoader: bulkLoader)
     }
     
-    private init(loader: BulkCertificatesLoader) {
-        self.loader = LoadingManager(loader: loader)
+    private init(certificateLoader: BulkCertificatesLoader) {
+        self.loader = OneTimeLoader(loader: certificateLoader)
+        super.init()
     }
 
     func load() {
@@ -27,14 +28,18 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
     
     public func checkValidity(challenge: URLAuthenticationChallenge,
                               completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-       
         loader.load { result in
-            if result.isFailed {
+            guard !result.isFailed else {
                 completionHandler(.performDefaultHandling, nil)
                 return
-            } else {
+            } 
+            
+            do {
                 let validator = CertificateValidator(certificates: result.certs)
-                validator.checkValidity(challenge: challenge, completionHandler: completionHandler)
+                try validator.checkValidity(challenge: challenge, completionHandler: completionHandler)
+            }
+            catch {
+                completionHandler(.performDefaultHandling, nil)
             }
         }
     }

@@ -5,16 +5,20 @@ struct Response<T> {
     let statusCode: Int?
     let result: Result<T, Error>
     let headers: [String: String]
-
-    init(statusCode: Int? = nil,
+    let requestProvider: WebRequestProvider
+    
+    init(requestProvider: WebRequestProvider,
+         statusCode: Int? = nil,
          result: Result<T, Error>,
          headers: [String: String] = [:]) {
+        self.requestProvider = requestProvider
         self.statusCode = statusCode
         self.result = result
         self.headers = headers
     }
     
-    init(data: T,
+    init(requestProvider: WebRequestProvider,
+         data: T,
          error: Error?,
          response: URLResponse?) {
         let httpResponse = response as? HTTPURLResponse
@@ -31,7 +35,8 @@ struct Response<T> {
             return data
         }
 
-        self.init(statusCode: httpStatusCode,
+        self.init(requestProvider: requestProvider,
+                  statusCode: httpStatusCode,
                   result: result,
                   headers: headers)
     }

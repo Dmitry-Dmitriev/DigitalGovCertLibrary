@@ -6,6 +6,10 @@ import Foundation
     private let derDecoder: DerDecoder = DerFormatCertDecoder()
     private let pemDecoder: PemDecoder = PemFormatCertDecoder()
 
+    public override init() {
+        super.init()
+    }
+
     @objc public func decode(certificateData: Data) throws -> Certificate {
         if let pemFile = try? pemDecoder.decode(pemData: certificateData) {
             return pemFile
@@ -14,6 +18,6 @@ import Foundation
             return derFile
         }
 
-        throw DGError.certDecoding(name: .empty, atPath: .empty)
+        throw DGError.Certificate.creation(data: certificateData)
     }
 }
