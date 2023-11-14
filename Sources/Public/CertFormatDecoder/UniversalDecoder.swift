@@ -1,4 +1,3 @@
-
 import Foundation
 
 protocol UniversalDecoder {
@@ -14,6 +13,7 @@ extension UniversalDecoder where Self: PemDecoder, Self: DerDecoder {
             return derFile
         }
 
-        throw DGError.Certificate.creation(data: certificateData)
+        // fixme
+        throw DGError.Certificate.creation(data: certificateData).upGlobal
     }
 }

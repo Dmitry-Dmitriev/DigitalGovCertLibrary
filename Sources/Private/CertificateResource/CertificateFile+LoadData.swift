@@ -1,8 +1,6 @@
-
-
-//import Foundation
+// import Foundation
 //
-//extension CertificateFile {
+// extension CertificateFile {
 //    func load() throws -> Data {
 //        let url = try makeURL()
 //        let data = try loadData(atUrl: url)
@@ -15,9 +13,9 @@
 //
 //        return certUrl
 //    }
-//}
+// }
 //
-//private extension CertificateFile {
+// private extension CertificateFile {
 //    func loadData(atUrl url: URL) throws -> Data {
 //        do {
 //            return try Data(contentsOf: url)
@@ -25,4 +23,4 @@
 //            throw readingFileError(reason: error.localizedDescription)
 //        }
 //    }
-//}
+// }

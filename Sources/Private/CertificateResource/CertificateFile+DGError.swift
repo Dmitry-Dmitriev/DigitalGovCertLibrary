@@ -1,8 +1,8 @@
 //
 //
-//import Foundation
+// import Foundation
 //
-//extension CertificateFile {
+// extension CertificateFile {
 //    var missingFileError: DGError {
 //        DGError.missingFile(name: fullFileName, atPath: fileLocation)
 //    }
@@ -22,4 +22,4 @@
 //    var fileLocation: String {
 //        certBundle.bundlePath
 //    }
-//}
+// }

@@ -1,4 +1,3 @@
-
 import Foundation
 
 protocol WebClient: AnyObject {
@@ -22,15 +21,14 @@ extension WebClient {
         send(requestProvider: requestProvider) { response in
             do {
                 guard let data = try response.result.get() else {
-                    throw DGError.Network.Response.unexpected
+                    throw DGError.Network.Response.unexpected(type: String(T.self))
                 }
                 let decoded = try JSONDecoder().decode(T.self, from: data)
                 let newResponse = Response(requestProvider: requestProvider,
                                            statusCode: response.statusCode,
                                            result: .success(decoded))
                 completion(newResponse)
-            }
-            catch {
+            } catch {
                 let error = DGError.network(.request(requestProvider, error: error))
                 let newResponse = Response<T>(requestProvider: requestProvider,
                                               statusCode: response.statusCode,
@@ -40,4 +38,3 @@ extension WebClient {
         }
     }
 }
-

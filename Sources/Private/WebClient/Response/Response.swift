@@ -1,4 +1,3 @@
-
 import Foundation
 
 struct Response<T> {
@@ -6,7 +5,7 @@ struct Response<T> {
     let result: Result<T, Error>
     let headers: [String: String]
     let requestProvider: WebRequestProvider
-    
+
     init(requestProvider: WebRequestProvider,
          statusCode: Int? = nil,
          result: Result<T, Error>,
@@ -16,7 +15,7 @@ struct Response<T> {
         self.result = result
         self.headers = headers
     }
-    
+
     init(requestProvider: WebRequestProvider,
          data: T,
          error: Error?,

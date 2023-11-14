@@ -20,12 +20,13 @@ let package = Package(
 		.target(name: "DigitalGovCertLibrary",
                 path: "Sources",
                 resources: [
-                    .copy("Certs/Readme.md"),
-                    .copy("Certs/russiantrustedca.der"),
-                    .copy("Certs/russiantrustedca.pem"),
-                    .copy("Certs/russiantrustedca.crt"),
-                    .copy("Certs/russiantrustedrootca.cer"),
-                    .copy("Certs/russiantrustedsubca.cer"),
+                    .copy("Resources/Localization/Localizable.xcstrings"),
+                    .copy("Resources/Certs/Readme.md"),
+                    .copy("Resources/Certs/russiantrustedca.der"),
+                    .copy("Resources/Certs/russiantrustedca.pem"),
+                    .copy("Resources/Certs/russiantrustedca.crt"),
+                    .copy("Resources/Certs/russiantrustedrootca.cer"),
+                    .copy("Resources/Certs/russiantrustedsubca.cer")
                 ]),
         .testTarget(name: "UnitTests",
                     dependencies: ["DigitalGovCertLibrary"],
@@ -33,5 +34,5 @@ let package = Package(
         ]
 )
 
-//DigitalGovCertLibrary
-//ru.digitalGovCert.library
+// DigitalGovCertLibrary
+// ru.digitalGovCert.library

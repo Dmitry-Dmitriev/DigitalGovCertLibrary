@@ -1,7 +1,4 @@
-
-
 import Foundation
-
 
 final class FileCertificateLoader: CertificateLoader {
     let resource: FileCertificateResource
@@ -9,7 +6,7 @@ final class FileCertificateLoader: CertificateLoader {
     init(resource: FileCertificateResource) {
         self.resource = resource
     }
-    
+
 //    func load(completion: @escaping (Result<Certificate, Error>) -> Void) {
 //        do {
 //            let url = try resource.resourceURL()
@@ -27,7 +24,7 @@ final class FileCertificateLoader: CertificateLoader {
         queue.underlyingQueue = DispatchQueue.concurrent
         return queue
     }()
-    
+
     func load(completion: @escaping (Result<Certificate, Error>) -> Void) {
         do {
             let url = try resource.resourceURL()
@@ -36,16 +33,18 @@ final class FileCertificateLoader: CertificateLoader {
             coordinator.coordinate(with: [intent],
                                    queue: workingQueue) { fileError in
                 if let fileError {
+                    // fixme
+                    
                     completion(.failure(fileError))
                     return
                 }
 
                 let reader: CertificateReader = FileURLCertificateReader(url: intent.url)
                 let cert = reader.readCertificateResult()
-                completion(cert)
+                completion(cert) // fixme
             }
-        }
-        catch {
+        } catch {
+            // fixme
             completion(.failure(error))
         }
     }

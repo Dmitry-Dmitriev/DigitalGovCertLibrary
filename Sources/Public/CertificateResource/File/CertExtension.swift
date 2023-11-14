@@ -1,4 +1,3 @@
-
 import Foundation
 
 @objc public enum CertExtension: Int {
@@ -18,7 +17,6 @@ extension CertExtension {
         }
     }
 }
-
 
 extension CertExtension: CaseIterable {}
 

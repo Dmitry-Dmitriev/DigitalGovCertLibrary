@@ -1,5 +1,3 @@
-
-
 import Foundation
 
 @objc public final class UniversalCertDecoder: NSObject, UniversalDecoder {
@@ -18,6 +16,7 @@ import Foundation
             return derFile
         }
 
-        throw DGError.Certificate.creation(data: certificateData)
+        // fixme
+        throw DGError.Certificate.creation(data: certificateData).upGlobal
     }
 }

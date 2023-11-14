@@ -1,4 +1,3 @@
-
 import Foundation
 
 protocol PemDecoder {
@@ -8,7 +7,8 @@ protocol PemDecoder {
 extension PemDecoder {
     func decode(pemData: Data) throws -> Certificate {
         guard let fileContent = String(data: pemData, encoding: .utf8) else {
-            throw DGError.Converting.stringFromData(pemData)
+            // fixme
+            throw DGError.Converting.stringFromData(pemData).upGlobal
         }
 
         var base64 = fileContent
@@ -17,17 +17,18 @@ extension PemDecoder {
 
         if #available(iOS 16.0, *), #available(OSX 13.0, *) {
             base64 = base64.split(separator: Character.linebreak).joined()
-            
+
         } else {
             base64 = base64.components(separatedBy: Character.linebreak).joined()
         }
 
         guard let certData = Data(base64Encoded: base64, options: .ignoreUnknownCharacters) else {
-            throw DGError.Converting.dataFromBase64(base64)
+            // fixme
+            throw DGError.Converting.dataFromBase64(base64).upGlobal
         }
 
         return try Certificate(data: certData)
-        
+
     }
 }
 

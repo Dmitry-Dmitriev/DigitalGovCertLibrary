@@ -1,11 +1,9 @@
-
-
 import Foundation
 
 final class OnQueueCertificateLoader: CertificateLoader {
     private let makeCertificateLoader: () -> CertificateLoader
     private let queue: DispatchQueue
-    
+
     init(queue: DispatchQueue, makeClosure: @autoclosure @escaping () -> CertificateLoader) {
         self.makeCertificateLoader = makeClosure
         self.queue = queue

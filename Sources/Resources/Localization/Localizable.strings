@@ -1,0 +1,15 @@
+// MARK: - file.reading.110
+"dgerror.file.reading.code.110.description" = "It is not possible to read the file %@ at path %@."
+"dgerror.file.reading.code.110.failureReason" = "Could not read the file because of the reason: %@."
+"dgerror.file.reading.code.110.recoverySuggestion" = "Please, try to open another file or correct the file extension."
+
+// MARK: - file.missing.120
+"dgerror.file.missing.code.120.description" = "The file %@ is missing at path %@."
+"dgerror.file.missing.code.120.failureReason" = "The file %@ is missing at path %@."
+"dgerror.file.missing.code.120.recoverySuggestion" = "Please, try another %@ location or correct the file name"
+
+// MARK: - file.decoding.130
+"dgerror.file.decoding.code.130.description" = "It is not possible to read the file %@ at path %@."
+"dgerror.file.decoding.code.130.failureReason" = "Certificate %@ at path %@ could not be decoded because of the reason: %@."
+"dgerror.file.decoding.code.130.recoverySuggestion" = "Please, try another file(s) with %@ extensions or original certificate file was not properly converted to desired extension."
+

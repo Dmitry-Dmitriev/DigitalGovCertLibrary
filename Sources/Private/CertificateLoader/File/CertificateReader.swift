@@ -1,5 +1,3 @@
-
-
 import Foundation
 
 protocol CertificateReader {
@@ -11,8 +9,7 @@ extension CertificateReader {
         do {
             let cert = try readCertificate()
             return .success(cert)
-        }
-        catch {
+        } catch {
             return .failure(error)
         }
     }

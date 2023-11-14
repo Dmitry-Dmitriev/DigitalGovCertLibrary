@@ -1,8 +1,7 @@
-
 import Foundation
 @testable import DigitalGovCertLibrary
 
-//extension BulkCertificatesLoader {
+// extension BulkCertificatesLoader {
 //    convenience init(bundeledCrts: [BundleCrt]) {
 //        let tuples = bundeledCrts.map {
 //            CertificateTuple(name: $0.name,
@@ -12,4 +11,4 @@ import Foundation
 //        }
 //        self.init(certificates: tuples, certbundle: .resourcesBundle)
 //    }
-//}
+// }

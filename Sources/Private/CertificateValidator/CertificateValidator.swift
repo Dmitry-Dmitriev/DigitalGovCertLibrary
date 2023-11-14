@@ -1,4 +1,3 @@
-
 import Foundation
 
 final class CertificateValidator: CertAuthChallengeValidator {
@@ -14,7 +13,7 @@ final class CertificateValidator: CertAuthChallengeValidator {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        
+
         let isTrusted = try secTrustValidator.checkValidity(of: trust, anchorCertificatesOnly: false)
         let authChallengeDisposition: URLSession.AuthChallengeDisposition = isTrusted ? .useCredential : .performDefaultHandling
         let credentials: URLCredential? = isTrusted ? .init(trust: trust) : nil

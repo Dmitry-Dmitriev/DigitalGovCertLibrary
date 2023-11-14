@@ -1,5 +1,3 @@
-
-
 import Foundation
 
 final class OneTimeLoader<T: Loader> {
@@ -7,11 +5,11 @@ final class OneTimeLoader<T: Loader> {
     private var loadingStatus: LoadingStatus<T.Output> = .idle
     private var completions: [(T.Output) -> Void] = []
     private let loader: T
-    
+
     init(loader: T) {
         self.loader = loader
     }
-    
+
     func load(completion: @escaping (T.Output) -> Void) {
         synchronizedQueue.async { [weak self] in
             self?.start(completion: completion)
@@ -20,7 +18,7 @@ final class OneTimeLoader<T: Loader> {
 
     private func start(completion: @escaping (T.Output) -> Void) {
         completions.append(completion)
-    
+
         switch loadingStatus {
         case .idle:
             startLoading()
@@ -41,7 +39,7 @@ final class OneTimeLoader<T: Loader> {
     }
 
     private func finish(result: T.Output) {
-        loadingStatus = result.isFailed ? .idle: .finished(result: result)
+        loadingStatus = result.isFailed ? .idle : .finished(result: result)
         complete(result: result)
     }
 

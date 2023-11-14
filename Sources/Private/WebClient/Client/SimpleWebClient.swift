@@ -1,14 +1,14 @@
-
 import Foundation
 
 final class SimpleWebClient: WebClient {
+    // swiftlint:disable:next large_tuple
     private typealias DataTaskTuple = (Data?, URLResponse?, Error?)
     private let session: URLSession
-    
+
     init(session: URLSession = .shared) {
         self.session = session
     }
-    
+
     func send(requestProvider: WebRequestProvider,
               completion: @escaping (WebResponse) -> Void) {
         do {
@@ -20,16 +20,16 @@ final class SimpleWebClient: WebClient {
                                                response: response)
                 completion(response)
             }
-        }
-        catch {
+        } catch {
             session.delegateQueue.addOperation {
+                // fixme
                 let response = Response<Data?>(requestProvider: requestProvider,
                                                result: .failure(error))
                 completion(response)
             }
         }
     }
-    
+
     private func send(request: URLRequest,
                       completion: @escaping (DataTaskTuple) -> Void) {
         session.dataTask(with: request) { data, response, error in

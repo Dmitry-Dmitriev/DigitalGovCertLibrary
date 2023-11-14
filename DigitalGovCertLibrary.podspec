@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.source              = { :git => 'git@github.com:Dmitry-Dmitriev/DigitalGovCertLibrary.git', :tag => "1.0.0" }
 #  s.source_files        = 'Sources/**/*.{h,m,swift}'
   s.resource_bundles = {
-   "DGCLResources" => ["Sources/Certs/*"]
+   "DGCLResources" => ["Sources/Resources/*"]
 }
   s.subspec 'Private' do |ss|
     ss.source_files = 'Sources/Private/**/*.{h,m,swift}'
