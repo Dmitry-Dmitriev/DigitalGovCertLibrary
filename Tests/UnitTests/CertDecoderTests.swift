@@ -3,36 +3,51 @@ import XCTest
 
 final class CertDecoderTests: XCTestCase {
     func test1() {
-        let frmat = "It is not possible to read the file %@ at path %@."
-        let string = String(format: frmat, "file", "error", "rrrr")
-        let final = "It is not possible to read the file file at path error."
-        XCTAssertEqual(string, final)
+        let formatWithTwoPlaceHolders = "It is not possible to read the file %@ at path %@."
+        let stringWithThreeArguments = String(format: formatWithTwoPlaceHolders, "file", "error", "rrrr")
+        let expectedResult = "It is not possible to read the file file at path error."
+        XCTAssertEqual(stringWithThreeArguments, expectedResult)
     }
-//    func testCerFormat() {
-//        let cerPem = CertificateFile(bundleCrt: .cerRoot, certDecoder: PemFormatCertDecoder())
-//        XCTAssertNoThrow(try cerPem.loadCerificate())
-//        let cerDer = CertificateFile(bundleCrt: .cerRoot, certDecoder: DerFormatCertDecoder())
-//        XCTAssertThrowsError(try cerDer.loadCerificate())
-//    }
-//
-//    func testDerFormat() {
-//        let derPem = CertificateFile(bundleCrt: .der, certDecoder: PemFormatCertDecoder())
-//        XCTAssertThrowsError(try derPem.loadCerificate())
-//        let derDer = CertificateFile(bundleCrt: .der, certDecoder: DerFormatCertDecoder())
-//        XCTAssertNoThrow(try derDer.loadCerificate())
-//    }
-//
-//    func testCrtFormat() {
-//        let crtPem = CertificateFile(bundleCrt: .crt, certDecoder: PemFormatCertDecoder())
-//        XCTAssertThrowsError(try crtPem.loadCerificate())
-//        let crtDer = CertificateFile(bundleCrt: .crt, certDecoder: DerFormatCertDecoder())
-//        XCTAssertNoThrow(try crtDer.loadCerificate())
-//    }
-//
-//    func testPemFormat() {
-//        let pemPem = CertificateFile(bundleCrt: .pem, certDecoder: PemFormatCertDecoder())
-//        XCTAssertNoThrow(try pemPem.loadCerificate())
-//        let pemDer = CertificateFile(bundleCrt: .pem, certDecoder: DerFormatCertDecoder())
-//        XCTAssertThrowsError(try pemDer.loadCerificate())
-//    }
+
+    func testCerFormat() {
+        let cerRoot = FileCertificateResource(crtFile: .cerRoot)
+        let rootExpectation = XCTestExpectation(description: "Load a root cer format")
+        
+        let cerSub = FileCertificateResource(crtFile: .cerSub)
+        let subExpectation = XCTestExpectation(description: "Load a sub cer format")
+        
+        testCertificateLoad(resource: cerRoot, expectation: rootExpectation)
+        testCertificateLoad(resource: cerSub, expectation: subExpectation)
+        wait(for: [rootExpectation, subExpectation], timeout: 2)
+    }
+
+    func testDerFormat() {
+        let der = FileCertificateResource(crtFile: .der)
+        let expectation = XCTestExpectation(description: "Load a der format")
+        testCertificateLoad(resource: der, expectation: expectation)
+        wait(for: [expectation], timeout: 2)
+    }
+
+    func testCrtFormat() {
+        let der = FileCertificateResource(crtFile: .crt)
+        let expectation = XCTestExpectation(description: "Load a crt format")
+        testCertificateLoad(resource: der, expectation: expectation)
+        wait(for: [expectation], timeout: 2)
+    }
+
+    func testPemFormat() {
+        let der = FileCertificateResource(crtFile: .pem)
+        let expectation = XCTestExpectation(description: "Load a pem format")
+        testCertificateLoad(resource: der, expectation: expectation)
+        wait(for: [expectation], timeout: 2)
+    }
+    
+    private func testCertificateLoad(resource: FileCertificateResource, expectation: XCTestExpectation) {
+        let cerRoot = FileCertificateResource(crtFile: .cerRoot)
+        cerRoot.certificateLoader.load { result in
+            let certificate = try? result.get()
+            XCTAssertNotNil(certificate)
+            expectation.fulfill()
+        }
+    }
 }

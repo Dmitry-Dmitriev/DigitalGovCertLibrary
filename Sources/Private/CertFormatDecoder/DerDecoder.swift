@@ -6,6 +6,10 @@ protocol DerDecoder {
 
 extension DerDecoder {
     func decode(derData: Data) throws -> Certificate {
-        return try Certificate(data: derData)
+        do {
+            return try Certificate(data: derData)
+        } catch {
+            throw DGError.Certificate.Decoding.der(error).dgError
+        }
     }
 }

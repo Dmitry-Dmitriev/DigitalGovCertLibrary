@@ -1,15 +1,76 @@
+// MARK: - convering.stringFromData.10
+"dgerror.convering.code.10.description" = "Error code 10. It is not possible to create string from data.";
+"dgerror.convering.code.10.failureReason" = "Data %@ could not be convrted to utf8 string.";
+"dgerror.convering.code.10.recoverySuggestion" = "Try to use another data.";
+
+// MARK: - convering.dataFromBase64.11
+"dgerror.converting.code.11.description" = "Error code 11. It is not possible to create data from base64 string.";
+"dgerror.converting.code.11.failureReason" = "Base64 string $@ could not be converted to data.";
+"dgerror.converting.code.11.recoverySuggestion" = "Try to use another base64 string."
+
+// MARK: - convering.urlFromString.12
+"dgerror.converting.code.12.description" = "Error code 12. It is not possible to create url from string.";
+"dgerror.converting.code.12.failureReason" = "String %@ could not be converted to URL"
+"dgerror.converting.code.12.recoverySuggestion" = "Try to use another string.";
+
 // MARK: - file.reading.110
-"dgerror.file.reading.code.110.description" = "It is not possible to read the file %@ at path %@."
-"dgerror.file.reading.code.110.failureReason" = "Could not read the file because of the reason: %@."
-"dgerror.file.reading.code.110.recoverySuggestion" = "Please, try to open another file or correct the file extension."
+"dgerror.file.reading.code.110.description" = "Error code 110. It is not possible to read the file %@ at path %@.";
+"dgerror.file.reading.code.110.failureReason" = "Could not read the file because of the reason: %@.";
+"dgerror.file.reading.code.110.recoverySuggestion" = "Please, try to open another file or correct the file extension.";
 
 // MARK: - file.missing.120
-"dgerror.file.missing.code.120.description" = "The file %@ is missing at path %@."
-"dgerror.file.missing.code.120.failureReason" = "The file %@ is missing at path %@."
-"dgerror.file.missing.code.120.recoverySuggestion" = "Please, try another %@ location or correct the file name"
+"dgerror.file.missing.code.120.description" = "Error code 120. The file %@ is missing at path %@.";
+"dgerror.file.missing.code.120.failureReason" = "The file %@ is missing at path %@.";
+"dgerror.file.missing.code.120.recoverySuggestion" = "Please, try another %@ location or correct the file name";
 
 // MARK: - file.decoding.130
-"dgerror.file.decoding.code.130.description" = "It is not possible to read the file %@ at path %@."
-"dgerror.file.decoding.code.130.failureReason" = "Certificate %@ at path %@ could not be decoded because of the reason: %@."
-"dgerror.file.decoding.code.130.recoverySuggestion" = "Please, try another file(s) with %@ extensions or original certificate file was not properly converted to desired extension."
+"dgerror.file.decoding.code.130.description" = "Error code 130. It is not possible to read the file %@ at path %@.";
+"dgerror.file.decoding.code.130.failureReason" = "Certificate %@ at path %@ could not be decoded because of the reason: %@.";
+"dgerror.file.decoding.code.130.recoverySuggestion" = "Please, try another file(s) with %@ extensions or original certificate file was not properly converted to desired extension.";
 
+// MARK: - network.response.221
+"dgerror.network.response.code.221.description" = "Error code 221. Unexpected response body type. %@ is expected. Empty body is received.";
+"dgerror.network.response.code.221.failureReason" = "Server does not send response body.";
+"dgerror.network.response.code.221.recoverySuggestion" = "Ask backend developer to send response body of type %@ or choose another server endpoint.";
+
+// MARK: - network.response.222
+"dgerror.network.response.code.222.description" = "Error code 222. Response fails";
+"dgerror.network.response.code.222.failureReason" = "Reason: \"%@\".";
+"dgerror.network.response.code.222.recoverySuggestion" = "Try to fix the error: \"%@\".";
+
+// MARK: - network.request.210
+"dgerror.network.request.code.210.description.option1" = "Error code 210. Request %@ fails.";
+"dgerror.network.request.code.210.description.option2" = "Error code 210. It is not possible create request from requestProvider %@.";
+"dgerror.network.request.code.210.failureReason" = "Reason: \"%@\".";
+"dgerror.network.request.code.210.recoverySuggestion" = "Try to fix the error: \"%@\".";
+
+// MARK: - convering.certificate.310
+"dgerror.certificate.creation.code.310.description" = "Error code 310. It is not possible to create SecCertificate from data.";
+"dgerror.certificate.creation.code.310.failureReason" = "Data %@ could not be converted to SecCertificate.";
+"dgerror.certificate.creation.code.310.recoverySuggestion" = "Try to use another data.";
+
+// MARK: - convering.certificate.validation.error.321
+"dgerror.certificate.validation.error.code.321.description" = "Error code 321. Error is occured on certiicate(s) validation.";
+"dgerror.certificate.validation.error.code.321.failureReason" = "Reason: %@";
+"dgerror.certificate.validation.error.code.321.recoverySuggestion" = "Try to use another certificate(s).";
+
+// MARK: - convering.certificate.validation.status.322
+"dgerror.certificate.validation.status.code.322.description" = "Error code 322. Error is occured on certiicate(s) validation.";
+"dgerror.certificate.validation.status.code.322.failureReason" = "Reason: certificate validation failed with OSStatus %@ secTrustResultType %@";
+"dgerror.certificate.validation.status.code.322.recoverySuggestion" = "Try to use another certificate(s).";
+
+// MARK: - convering.certificate.decoding.pem.331
+"dgerror.certificate.decoding.pem.code.331.description" = "Error code 331. Could not create certificate with pem decoder";
+"dgerror.certificate.decoding.pem.code.331.failureReason" = "Reason: \"%@\"";
+"dgerror.certificate.decoding.pem.code.331.recoverySuggestion" = "Try to fix the error \"%@\"";
+
+// MARK: - convering.certificate.decoding.der.332
+"dgerror.certificate.decoding.der.code.332.description" = "Error code 333. Could not create certificate with der decoder";
+"dgerror.certificate.decoding.der.code.332.failureReason" = "Reason: \"%@\"";
+"dgerror.certificate.decoding.der.code.332.recoverySuggestion" = "Try to fix the error \"%@\"";
+
+
+// MARK: - convering.certificate.decoding.universal.333
+"dgerror.certificate.decoding.universal.code.333.description" = "Error code 333. Universal decoder fails.";
+"dgerror.certificate.decoding.universal.code.333.failureReason" = "Reason: \"%@\"";
+"dgerror.certificate.decoding.universal.code.333.recoverySuggestion" = "Try to fix errors \"%@\"";

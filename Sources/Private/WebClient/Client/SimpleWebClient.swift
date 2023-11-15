@@ -22,7 +22,6 @@ final class SimpleWebClient: WebClient {
             }
         } catch {
             session.delegateQueue.addOperation {
-                // fixme
                 let response = Response<Data?>(requestProvider: requestProvider,
                                                result: .failure(error))
                 completion(response)

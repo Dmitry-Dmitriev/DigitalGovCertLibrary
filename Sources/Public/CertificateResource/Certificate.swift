@@ -10,13 +10,3 @@ import Foundation
         super.init()
     }
 }
-
-extension Certificate: Decodable {
-    public convenience init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let data = try container.decode(Data.self)
-        let certDecoder: UniversalDecoder = UniversalCertDecoder()
-        let cert = try certDecoder.decode(certificateData: data)
-        self.init(certificate: cert.certificate)
-    }
-}

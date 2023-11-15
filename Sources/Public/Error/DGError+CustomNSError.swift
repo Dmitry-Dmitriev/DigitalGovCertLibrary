@@ -8,10 +8,8 @@ extension DGError: CustomNSError {
             return 1 * globalErrorCodeLevel + error.errorCode
         case let .network(error):
             return 2 * globalErrorCodeLevel + error.errorCode
-        case let .converting(error):
-            return 3 * globalErrorCodeLevel + error.errorCode
         case let .certificate(error):
-            return 4 * globalErrorCodeLevel + error.errorCode
+            return 3 * globalErrorCodeLevel + error.errorCode
         }
     }
 }

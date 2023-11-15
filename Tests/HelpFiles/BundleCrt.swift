@@ -1,7 +1,7 @@
 import Foundation
 @testable import DigitalGovCertLibrary
 
-struct BundleCrt {
+struct CrtFile {
     let name: String
     let ext: CertExtension
 
@@ -10,34 +10,34 @@ struct BundleCrt {
         self.ext = ext
     }
 
-    static let cerRoot = BundleCrt(name: "russiantrustedrootca", ext: .cer)
-    static let cerSub = BundleCrt(name: "russiantrustedsubca", ext: .cer)
-    static let crt = BundleCrt(name: "russiantrustedca", ext: .crt)
-    static let der = BundleCrt(name: "russiantrustedca", ext: .der)
-    static let pem = BundleCrt(name: "russiantrustedca", ext: .pem)
-    static let invalid = BundleCrt(name: "invalidCrtFilename", ext: .cer)
+    static let cerRoot = CrtFile(name: "russiantrustedrootca", ext: .cer)
+    static let cerSub = CrtFile(name: "russiantrustedsubca", ext: .cer)
+    static let crt = CrtFile(name: "russiantrustedca", ext: .crt)
+    static let der = CrtFile(name: "russiantrustedca", ext: .der)
+    static let pem = CrtFile(name: "russiantrustedca", ext: .pem)
+    static let invalid = CrtFile(name: "invalidCrtFilename", ext: .cer)
 }
 
-extension Array where Element == BundleCrt {
+extension Array where Element == CrtFile {
     var crtNames: [String] {
         return map { $0.name }
     }
 }
 
-extension Array where Element == BundleCrt {
-    static var cerList: [BundleCrt] {
+extension Array where Element == CrtFile {
+    static var cerList: [CrtFile] {
         return [.cerRoot, .cerSub]
     }
-    static var crtList: [BundleCrt] {
+    static var crtList: [CrtFile] {
         return [.crt]
     }
-    static var derList: [BundleCrt] {
+    static var derList: [CrtFile] {
         return [.der]
     }
-    static var pemList: [BundleCrt] {
+    static var pemList: [CrtFile] {
         return [.pem]
     }
-    static var invalidCrtList: [BundleCrt] {
+    static var invalidCrtList: [CrtFile] {
         return [.invalid]
     }
 }

@@ -3,7 +3,6 @@ import Foundation
 public enum DGError: Error {
     case file(_ error: DGError.File)
     case network(_ error: DGError.Network)
-    case converting(_ error: DGError.Converting)
     case certificate(_ error: DGError.Certificate)
 }
 
@@ -19,14 +18,9 @@ public extension DGError {
         case response(error: DGError.Network.Response)
     }
 
-    enum Converting {
-        case stringFromData(_ data: Data)
-        case dataFromBase64(_ string: String)
-        case urlFromString(_ string: String)
-    }
-
     enum Certificate: Error {
         case creation(data: Data)
+        case decoding(_ error: DGError.Certificate.Decoding)
         case validation(_ error: DGError.Certificate.Validation)
     }
 }
@@ -38,9 +32,19 @@ public extension DGError.Certificate {
     }
 }
 
+public extension DGError.Certificate {
+    enum Decoding: Error {
+        case pem(_ error: Error)
+        case der(_ error: Error)
+        case universal(_ results: [Result<Certificate, Error>])
+    }
+}
+
+
 public extension DGError.Network {
     enum Response: Error {
         case unexpected(type: String)
+        case error(_ error: Error)
     }
 }
 
@@ -66,31 +70,57 @@ extension DGError.Network.Response: CustomNSError {
     public var errorCode: Int {
         switch self {
         case .unexpected: return 1 * thirdErrorCodeLevel // 221
+        case .error: return 2 * thirdErrorCodeLevel // 222
         }
     }
 }
+
+extension DGError {
+    enum Converting {
+        case stringFromData(_ data: Data)
+        case dataFromBase64(_ string: String)
+        case urlFromString(_ string: String)
+    }
+}
+
 extension DGError.Converting: CustomNSError {
     public var errorCode: Int {
         switch self {
-        case .stringFromData: return 1 * secondErrorCodeLevel // 310
-        case .dataFromBase64: return 2 * secondErrorCodeLevel // 320
-        case .urlFromString: return 3 * secondErrorCodeLevel // 330
+        case .stringFromData: return 10
+        case .dataFromBase64: return 11
+        case .urlFromString: return 12
         }
     }
 }
+
 extension DGError.Certificate: CustomNSError {
     public var errorCode: Int {
         switch self {
-        case .creation: return 1 * secondErrorCodeLevel // 410
-        case let .validation(error): return 2 * secondErrorCodeLevel + error.errorCode // 420 + error.errorCode
+        case .creation: return 1 * secondErrorCodeLevel // 310
+        case let .validation(error): return 2 * secondErrorCodeLevel + error.errorCode // 320 + error.errorCode
+        case let .decoding(error): return 3 * secondErrorCodeLevel + error.errorCode // 330 + error.errorCode
         }
     }
 }
+
 extension DGError.Certificate.Validation: CustomNSError {
     public var errorCode: Int {
         switch self {
-        case .error: return 1 * thirdErrorCodeLevel // 421
-        case .status: return 2 * thirdErrorCodeLevel // 422
+        case .error: return 1 * thirdErrorCodeLevel // 321
+        case .status: return 2 * thirdErrorCodeLevel // 322
+        }
+    }
+}
+
+extension DGError.Certificate.Decoding: CustomNSError {
+    public var errorCode: Int {
+        switch self {
+        case .pem:
+            return 1 * thirdErrorCodeLevel // 331
+        case .der:
+            return 2 * thirdErrorCodeLevel // 332
+        case .universal:
+            return 3 * thirdErrorCodeLevel // 333
         }
     }
 }
@@ -98,36 +128,43 @@ extension DGError.Certificate.Validation: CustomNSError {
 extension DGError: GlobalLevelErrorCode {}
 
 extension DGError.File: SecondLevelErrorCode {
-    var upGlobal: DGError {
+    var dgError: DGError {
         DGError.file(self)
     }
 }
 extension DGError.Network: SecondLevelErrorCode {
-    var upGlobal: DGError {
+    var dgError: DGError {
         DGError.network(self)
     }
 }
-extension DGError.Converting: SecondLevelErrorCode {
-    var upGlobal: DGError {
-        DGError.converting(self)
-    }
-}
+
 extension DGError.Certificate: SecondLevelErrorCode {
-    var upGlobal: DGError {
+    var dgError: DGError {
         DGError.certificate(self)
     }
 }
 
+
 extension DGError.Network.Response: ThirdLevelErrorCode {
-    var upSecond: SecondLevelErrorCode {
-        return DGError.Network.response(error: self)
+    var dgError: DGError {
+        return DGError.Network.response(error: self).dgError
     }
 }
+
+
+extension DGError.Certificate.Decoding: ThirdLevelErrorCode {
+    var dgError: DGError {
+        return DGError.Certificate.decoding(self).dgError
+    }
+}
+
+
 extension DGError.Certificate.Validation: ThirdLevelErrorCode {
-    var upSecond: SecondLevelErrorCode {
-        return DGError.Certificate.validation(self)
+    var dgError: DGError {
+        return DGError.Certificate.validation(self).dgError
     }
 }
+
 
 protocol GlobalLevelErrorCode {
     var globalErrorCodeLevel: Int { get }
@@ -141,7 +178,7 @@ extension GlobalLevelErrorCode {
 
 protocol SecondLevelErrorCode {
     var secondErrorCodeLevel: Int { get }
-    var upGlobal: DGError { get }
+    var dgError: DGError { get }
 }
 
 extension SecondLevelErrorCode {
@@ -152,7 +189,7 @@ extension SecondLevelErrorCode {
 
 protocol ThirdLevelErrorCode {
     var thirdErrorCodeLevel: Int { get }
-    var upSecond: SecondLevelErrorCode { get }
+    var dgError: DGError { get }
 }
 
 extension ThirdLevelErrorCode {

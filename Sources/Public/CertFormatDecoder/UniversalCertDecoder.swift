@@ -9,14 +9,16 @@ import Foundation
     }
 
     @objc public func decode(certificateData: Data) throws -> Certificate {
-        if let pemFile = try? pemDecoder.decode(pemData: certificateData) {
+        let pemResult = Result(autoCatching: try pemDecoder.decode(pemData: certificateData))
+        if let pemFile = try? pemResult.get() {
             return pemFile
         }
-        if let derFile = try? derDecoder.decode(derData: certificateData) {
+        
+        let derResult = Result(autoCatching: try derDecoder.decode(derData: certificateData))
+        if let derFile = try? derResult.get() {
             return derFile
         }
-
-        // fixme
-        throw DGError.Certificate.creation(data: certificateData).upGlobal
+        let results  = [pemResult, derResult]
+        throw DGError.Certificate.Decoding.universal(results).dgError
     }
 }

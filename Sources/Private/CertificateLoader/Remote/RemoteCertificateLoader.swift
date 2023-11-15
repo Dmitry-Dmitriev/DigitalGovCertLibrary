@@ -10,7 +10,17 @@ final class RemoteCertificateLoader: CertificateLoader {
 
     func load(completion: @escaping (Result<Certificate, Error>) -> Void) {
         client.send(requestProvider: remoteResource) { response in
-            completion(response.result)
+            do {
+                guard let data = try response.result.get() else {
+                    throw DGError.Network.Response.unexpected(type: String(Certificate.self))
+                }
+                let universalDecoder: UniversalDecoder = UniversalCertDecoder()
+                let cert = try universalDecoder.decode(certificateData: data)
+                completion(.success(cert))
+            } catch {
+                let error = DGError.Network.response(error: .error(error)).dgError
+                completion(.failure(error))
+            }
         }
     }
 }

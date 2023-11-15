@@ -10,8 +10,25 @@ final class FileURLCertificateReader: CertificateReader {
     }
 
     func readCertificate() throws -> Certificate {
-        let data = try Data(contentsOf: url)
-        let cert = try certDecoder.decode(certificateData: data)
-        return cert
+        do {
+            let data = try Data(contentsOf: url)
+            let cert = try certDecoder.decode(certificateData: data)
+            return cert
+        } catch {
+            throw DGError.File.decoding(name: url.fileName,
+                                        atPath: url.filePath,
+                                        reason: error.localizedDescription).dgError
+                
+        }
+    }
+}
+
+extension URL {
+    var fileName: String {
+        return lastPathComponent
+    }
+    
+    var filePath: String {
+        return deletingLastPathComponent().absoluteString
     }
 }

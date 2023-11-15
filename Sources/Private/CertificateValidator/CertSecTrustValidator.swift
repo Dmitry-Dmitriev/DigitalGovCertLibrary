@@ -16,20 +16,14 @@ final class CertSecTrustValidator: SecTrustValidator {
         if #available(macOS 10.14, *) {
             isTrusted = SecTrustEvaluateWithError(serverTrust, &error)
             if let error {
-                // fixme
-                throw DGError.Certificate.Validation.error(error)
-                    .upSecond
-                    .upGlobal
+                throw DGError.Certificate.Validation.error(error).dgError
             }
         } else {
             var secresult = SecTrustResultType.invalid
             let status = SecTrustEvaluate(serverTrust, &secresult)
             isTrusted = status == errSecSuccess
             if status != errSecSuccess {
-                // fixme
-                throw DGError.Certificate.Validation.status(status, secResult: secresult)
-                    .upSecond
-                    .upGlobal
+                throw DGError.Certificate.Validation.status(status, secResult: secresult).dgError
             }
         }
 

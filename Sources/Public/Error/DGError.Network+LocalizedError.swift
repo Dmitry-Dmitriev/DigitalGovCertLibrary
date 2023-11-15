@@ -6,9 +6,9 @@ extension DGError.Network: LocalizedError {
         switch self {
         case let .request(requestProvider, error: _):
             if let request = try? requestProvider.request {
-                return "Request \(request) fails."
+                return localizedMessage(key: .dgerrorNetworkRequestCode210DescriptionOption1Key, args: [String(request)])
             } else {
-               return "It is not possible create request from requestProvider \(requestProvider)."
+                return localizedMessage(key: .dgerrorNetworkRequestCode210DescriptionOption2Key, args: [String(requestProvider)])
             }
         case let .response(error):
             return error.errorDescription
@@ -17,7 +17,7 @@ extension DGError.Network: LocalizedError {
     public var failureReason: String? {
         switch self {
         case let .request(_, error: error):
-            return "Reason: \"\(error)\"."
+            return localizedMessage(key: .dgerrorNetworkRequestCode210FailureReasonKey, args: [String(error)])
         case let .response(error):
             return error.failureReason
         }
@@ -25,9 +25,16 @@ extension DGError.Network: LocalizedError {
     public var recoverySuggestion: String? {
         switch self {
         case let .request(_, error: error):
-            return "Try to fix the error: \"\(error)\"."
+            return localizedMessage(key: .dgerrorNetworkRequestCode210RecoverySuggestionKey, args: [String(error)])
         case let .response(error):
             return error.recoverySuggestion
         }
     }
+}
+
+private extension String {
+    static let dgerrorNetworkRequestCode210DescriptionOption1Key = "dgerror.network.request.code.210.description.option1"
+    static let dgerrorNetworkRequestCode210DescriptionOption2Key = "dgerror.network.request.code.210.description.option2"
+    static let dgerrorNetworkRequestCode210FailureReasonKey = "dgerror.network.request.code.210.failureReason"
+    static let dgerrorNetworkRequestCode210RecoverySuggestionKey = "dgerror.network.request.code.210.recoverySuggestion"
 }
