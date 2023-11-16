@@ -20,7 +20,7 @@ let package = Package(
 		.target(name: "DigitalGovCertLibrary",
                 path: "Sources",
                 resources: [
-                    .copy("Resources/Localization/Localizable.xcstrings"),
+                    .copy("Resources/Localization/Localizable.strings"),
                     .copy("Resources/Certs/Readme.md"),
                     .copy("Resources/Certs/russiantrustedca.der"),
                     .copy("Resources/Certs/russiantrustedca.pem"),
@@ -33,6 +33,3 @@ let package = Package(
                     path: "Tests")
         ]
 )
-
-// DigitalGovCertLibrary
-// ru.digitalGovCert.library

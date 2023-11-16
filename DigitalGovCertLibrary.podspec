@@ -14,7 +14,10 @@ Pod::Spec.new do |s|
   s.source              = { :git => 'git@github.com:Dmitry-Dmitriev/DigitalGovCertLibrary.git', :tag => "1.0.0" }
 #  s.source_files        = 'Sources/**/*.{h,m,swift}'
   s.resource_bundles = {
-   "DGCLResources" => ["Sources/Resources/*"]
+   "DGCLResources" => [
+			"Sources/Resources/Certs/*",
+			"Sources/Resources/Localization/*",
+		]
 }
   s.subspec 'Private' do |ss|
     ss.source_files = 'Sources/Private/**/*.{h,m,swift}'
@@ -25,7 +28,6 @@ Pod::Spec.new do |s|
   s.test_spec 'DGCLTests' do |test_spec|
     test_spec.source_files = 'Tests/**/*.{h,m,swift}'
   end
-#  s.vendored_frameworks = 'digital.gov.rus.cert.support.xcframework'
   s.requires_arc        = true
   s.swift_version = '5.0'
 end

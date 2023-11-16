@@ -6,11 +6,11 @@
 // MARK: - convering.dataFromBase64.11
 "dgerror.converting.code.11.description" = "Error code 11. It is not possible to create data from base64 string.";
 "dgerror.converting.code.11.failureReason" = "Base64 string $@ could not be converted to data.";
-"dgerror.converting.code.11.recoverySuggestion" = "Try to use another base64 string."
+"dgerror.converting.code.11.recoverySuggestion" = "Try to use another base64 string.";
 
 // MARK: - convering.urlFromString.12
 "dgerror.converting.code.12.description" = "Error code 12. It is not possible to create url from string.";
-"dgerror.converting.code.12.failureReason" = "String %@ could not be converted to URL"
+"dgerror.converting.code.12.failureReason" = "String %@ could not be converted to URL";
 "dgerror.converting.code.12.recoverySuggestion" = "Try to use another string.";
 
 // MARK: - file.reading.110

@@ -14,7 +14,7 @@ final class RemoteCertificateLoader: CertificateLoader {
                 guard let data = try response.result.get() else {
                     throw DGError.Network.Response.unexpected(type: String(Certificate.self))
                 }
-                let universalDecoder: UniversalDecoder = UniversalCertDecoder()
+                let universalDecoder: CertificateDecoder = UniversalCertDecoder()
                 let cert = try universalDecoder.decode(certificateData: data)
                 completion(.success(cert))
             } catch {

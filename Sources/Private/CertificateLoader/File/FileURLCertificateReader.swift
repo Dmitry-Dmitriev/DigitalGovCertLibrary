@@ -2,9 +2,9 @@ import Foundation
 
 final class FileURLCertificateReader: CertificateReader {
     private let url: URL
-    private let certDecoder: UniversalDecoder
+    private let certDecoder: CertificateDecoder
 
-    init(url: URL, certDecoder: UniversalDecoder = UniversalCertDecoder()) {
+    init(url: URL, certDecoder: CertificateDecoder = UniversalCertDecoder()) {
         self.url = url
         self.certDecoder = certDecoder
     }
@@ -18,17 +18,7 @@ final class FileURLCertificateReader: CertificateReader {
             throw DGError.File.decoding(name: url.fileName,
                                         atPath: url.filePath,
                                         reason: error.localizedDescription).dgError
-                
-        }
-    }
-}
 
-extension URL {
-    var fileName: String {
-        return lastPathComponent
-    }
-    
-    var filePath: String {
-        return deletingLastPathComponent().absoluteString
+        }
     }
 }

@@ -1,8 +1,8 @@
 import Foundation
 
-/// no docs
+/// Wrapper to use SecCertificate array in obj-c
 @objc public final class Certificate: NSObject {
-    /// no docs
+    /// SecCertificate property
     @objc public let certificate: SecCertificate
 
     internal init(certificate: SecCertificate) {

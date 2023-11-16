@@ -3,8 +3,8 @@ import Foundation
 final class CertificateValidator: CertAuthChallengeValidator {
     private let secTrustValidator: SecTrustValidator
 
-    init(certificates: [Certificate]) {
-        self.secTrustValidator = CertSecTrustValidator(certificates: certificates)
+    init(secTrustValidator: SecTrustValidator) {
+        self.secTrustValidator = secTrustValidator
     }
 
     func checkValidity(challenge: URLAuthenticationChallenge,
@@ -18,5 +18,19 @@ final class CertificateValidator: CertAuthChallengeValidator {
         let authChallengeDisposition: URLSession.AuthChallengeDisposition = isTrusted ? .useCredential : .performDefaultHandling
         let credentials: URLCredential? = isTrusted ? .init(trust: trust) : nil
         completionHandler(authChallengeDisposition, credentials)
+    }
+
+    @available(iOS 13.0, *)
+    @available(OSX 10.15, *)
+    func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async throws -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                try checkValidity(challenge: challenge) { disposition, credentials in
+                    continuation.resume(returning: (disposition, credentials))
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
     }
 }

@@ -11,7 +11,17 @@ final class BulkCertLoaderTests: XCTestCase {
                                   expectation: expectation)
         wait(for: [expectation], timeout: 5)
     }
-    
+
+    func testCerBulkCertLoader() {
+        let crtBulkCertLoader = BulkCertificatesLoader(crtFiles: .cerList)
+        let expectedSuccessLoadsCount = [CrtFile].self.cerList.count
+        let expectation = XCTestExpectation(description: "Load a crt file from disk asynchronously.")
+        testSuccessBulkCertLoader(cerBulkCertLoader: crtBulkCertLoader,
+                                  expectedSuccessLoadsCount: expectedSuccessLoadsCount,
+                                  expectation: expectation)
+        wait(for: [expectation], timeout: 1)
+    }
+
     func testCrtBulkCertLoader() {
         let crtBulkCertLoader = BulkCertificatesLoader(crtFiles: .crtList)
         let expectedSuccessLoadsCount = [CrtFile].self.crtList.count
@@ -30,7 +40,7 @@ final class BulkCertLoaderTests: XCTestCase {
                                   expectedSuccessLoadsCount: expectedSuccessLoadsCount,
                                   expectation: expectation)
         wait(for: [expectation], timeout: 1)
-        
+
     }
 
     func testPemBulkCertLoader() {
@@ -55,10 +65,10 @@ final class BulkCertLoaderTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 1)
     }
-    
+
     private func testSuccessBulkCertLoader(cerBulkCertLoader: BulkCertificatesLoader,
-                                   expectedSuccessLoadsCount: Int,
-                                   expectation: XCTestExpectation) {
+                                           expectedSuccessLoadsCount: Int,
+                                           expectation: XCTestExpectation) {
         cerBulkCertLoader.load { result in
             XCTAssertFalse(result.isFailed)
             XCTAssertEqual(result.certs.count, expectedSuccessLoadsCount)

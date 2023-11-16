@@ -1,17 +1,23 @@
 import Foundation
 
+/// Object that loads certificates resources from file or from network and
 @objc(DGCertificateValidator)
 public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationChallengeValidator {
     private let oneTimeLoader: OneTimeLoader<BulkCertificatesLoader>
 
-    let shared = DigitalGovCertificateValidator(fileCertificates: .digitalGov)
+    @objc
+    public static let shared = DigitalGovCertificateValidator(fileCertificates: .digitalGov)
 
-    convenience init(fileCertificates: [FileCertificateResource]) {
+    /// Convenience initializer to load certificates from files
+    @objc
+    public convenience init(fileCertificates: [FileCertificateResource]) {
         let bulkLoader = BulkCertificatesLoader(fileResources: fileCertificates)
         self.init(certificateLoader: bulkLoader)
     }
 
-    convenience init(remoteCertificates: [RemoteCertificateResource]) {
+    /// Convenience initializer to load certificates from remote
+    @objc
+    public convenience init(remoteCertificates: [RemoteCertificateResource]) {
         let bulkLoader = BulkCertificatesLoader(remoteResources: remoteCertificates)
         self.init(certificateLoader: bulkLoader)
     }
@@ -21,10 +27,16 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
         super.init()
     }
 
-    public func load() {
+    /// Speeds up certificates load from resources. Multiple call of the method do nothing
+    @objc public func load() {
         oneTimeLoader.load { _ in }
     }
 
+    /// Validates authentication challenge
+    /// - Parameters:
+    ///    - challenge: authentication challenge (from URLSessionDelegate or WKNavigationDelegate)
+    ///    - completionHandler: The completion handler that is invoked to respond to the challenge
+    @objc
     public func checkValidity(challenge: URLAuthenticationChallenge,
                               completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         oneTimeLoader.load { result in
@@ -34,7 +46,8 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
             }
 
             do {
-                let validator = CertificateValidator(certificates: result.certs)
+                let secTrustValidator: SecTrustValidator = CertSecTrustValidator(certificates: result.certs)
+                let validator: CertAuthChallengeValidator = CertificateValidator(secTrustValidator: secTrustValidator)
                 try validator.checkValidity(challenge: challenge, completionHandler: completionHandler)
             } catch {
                 completionHandler(.performDefaultHandling, nil)
@@ -42,6 +55,7 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
         }
     }
 
+    /// Async / await version of checkValidity(challenge: completionHandler: )
     @available(iOS 13.0, *)
     @available(OSX 10.15, *)
     public func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {

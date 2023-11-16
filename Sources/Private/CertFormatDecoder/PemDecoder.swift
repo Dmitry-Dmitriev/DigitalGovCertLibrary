@@ -37,7 +37,7 @@ private extension PemDecoder {
 
         return try Certificate(data: certData)
     }
-    
+
     var certBegin: String {
         return "-----BEGIN CERTIFICATE-----"
     }

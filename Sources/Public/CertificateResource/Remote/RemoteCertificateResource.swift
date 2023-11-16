@@ -1,37 +1,47 @@
 import Foundation
 
-// swiftlint:disable:next final_class
+/// Certificate resource that can be loaded from network
 @objc open class RemoteCertificateResource: NSObject, WebRequestProvider, CertificateLoadableResource {
     let urlString: String
 
+    /// Designated initializer
+    /// - Parameters:
+    ///    - urlString: string representation of remote url
     public init(urlString: String) {
         self.urlString = urlString
         super.init()
     }
 
-    @objc open func resourceURL() throws -> URL {
+    /// Certiicate resource remote url
+    @objc
+    open func resourceURL() throws -> URL {
         guard let url = URL(string: urlString) else {
             throw DGError.Converting.urlFromString(urlString)
         }
         return url
     }
 
-    @objc open func makeRequest() throws -> URLRequest {
+    /// Tries to create request 
+    @objc
+    open func makeRequest() throws -> URLRequest {
         let url = try resourceURL()
         return URLRequest(url: url)
     }
 
-    public var request: URLRequest {
+    /// URLRequest ro remote certificate resource
+    open var request: URLRequest {
         get throws {
             do {
                 return try makeRequest()
             } catch {
-                throw DGError.Network.request(self, error: error).dgError
+                let error = DGError.Network.request(self, error: error)
+                throw error.dgError
             }
         }
     }
 
-    public var certificateLoader: CertificateLoader {
+    /// Certificate loader of remote resource
+    open var certificateLoader: CertificateLoader {
         return RemoteCertificateLoader(resource: self)
     }
 }
