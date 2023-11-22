@@ -12,10 +12,17 @@ struct CrtFile {
 }
 
 extension CrtFile {
-    static let cerRoot = CrtFile(name: "russiantrustedrootca", ext: .cer)
-    static let cerSub = CrtFile(name: "russiantrustedsubca", ext: .cer)
-    static let crt = CrtFile(name: "russiantrustedca", ext: .crt)
-    static let der = CrtFile(name: "russiantrustedca", ext: .der)
-    static let pem = CrtFile(name: "russiantrustedca", ext: .pem)
-    static let invalid = CrtFile(name: "invalidCrtFilename", ext: .cer)
+    static let cerRoot = CrtFile(name: .russiantrustedrootca, ext: .cer)
+    static let cerSub = CrtFile(name: .russiantrustedsubca, ext: .cer)
+    static let crt = CrtFile(name: .russiantrustedca, ext: .crt)
+    static let der = CrtFile(name: .russiantrustedca, ext: .der)
+    static let pem = CrtFile(name: .russiantrustedca, ext: .pem)
+    static let invalid = CrtFile(name: .invalidCrtFilename, ext: .cer)
+}
+
+private extension String {
+    static let russiantrustedrootca = "russiantrustedrootca"
+    static let russiantrustedsubca = "russiantrustedsubca"
+    static let russiantrustedca = "russiantrustedca"
+    static let invalidCrtFilename = "invalidCrtFilename"
 }

@@ -1,5 +1,6 @@
 import Foundation
 
+/// File's errors
 public extension DGError {
     enum File: Error {
         case reading(name: String, atPath: String, reason: String)

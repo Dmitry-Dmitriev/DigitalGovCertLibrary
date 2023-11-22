@@ -8,25 +8,24 @@ final class CertificateValidator: CertAuthChallengeValidator {
     }
 
     func checkValidity(challenge: URLAuthenticationChallenge,
-                       completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) throws {
+                       completionHandler: @escaping (CertificateValidationResult?) -> Void) throws {
         guard let trust = challenge.protectionSpace.serverTrust else {
-            completionHandler(.performDefaultHandling, nil)
+            completionHandler(nil)
             return
         }
 
         let isTrusted = try secTrustValidator.checkValidity(of: trust, anchorCertificatesOnly: false)
-        let authChallengeDisposition: URLSession.AuthChallengeDisposition = isTrusted ? .useCredential : .performDefaultHandling
-        let credentials: URLCredential? = isTrusted ? .init(trust: trust) : nil
-        completionHandler(authChallengeDisposition, credentials)
+        let certificateValidationResult = CertificateValidationResult(secTrust: trust, isTrusted: isTrusted)
+        completionHandler(certificateValidationResult)
     }
 
     @available(iOS 13.0, *)
     @available(OSX 10.15, *)
-    func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async throws -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async throws -> (CertificateValidationResult?) {
         try await withCheckedThrowingContinuation { continuation in
             do {
-                try checkValidity(challenge: challenge) { disposition, credentials in
-                    continuation.resume(returning: (disposition, credentials))
+                try checkValidity(challenge: challenge) { certificateValidationResult in
+                    continuation.resume(returning: certificateValidationResult)
                 }
             } catch {
                 continuation.resume(throwing: error)

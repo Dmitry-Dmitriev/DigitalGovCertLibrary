@@ -1,5 +1,6 @@
 import Foundation
 
+/// Certificate's errors
 public extension DGError {
     enum Certificate: Error {
         case creation(data: Data)

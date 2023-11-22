@@ -1,5 +1,6 @@
 import Foundation
 
+/// Certificate's decoding's errors
 public extension DGError.Certificate {
     enum Decoding: Error {
         case pem(_ error: Error)

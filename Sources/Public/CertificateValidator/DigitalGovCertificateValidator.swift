@@ -27,7 +27,7 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
         super.init()
     }
 
-    /// Speeds up certificates load from resources. Multiple call of the method do nothing
+    /// Speeds up certificates load from resources. Multiple call of the method does nothing
     @objc public func load() {
         oneTimeLoader.load { _ in }
     }
@@ -38,10 +38,10 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
     ///    - completionHandler: The completion handler that is invoked to respond to the challenge
     @objc
     public func checkValidity(challenge: URLAuthenticationChallenge,
-                              completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+                              completionHandler: @escaping (CertificateValidationResult?) -> Void) {
         oneTimeLoader.load { result in
             guard !result.isFailed else {
-                completionHandler(.performDefaultHandling, nil)
+                completionHandler(nil)
                 return
             }
 
@@ -50,7 +50,7 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
                 let validator: CertAuthChallengeValidator = CertificateValidator(secTrustValidator: secTrustValidator)
                 try validator.checkValidity(challenge: challenge, completionHandler: completionHandler)
             } catch {
-                completionHandler(.performDefaultHandling, nil)
+                completionHandler(nil)
             }
         }
     }
@@ -58,10 +58,10 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
     /// Async / await version of checkValidity(challenge: completionHandler: )
     @available(iOS 13.0, *)
     @available(OSX 10.15, *)
-    public func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    public func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async -> CertificateValidationResult? {
         await withCheckedContinuation { continuation in
-            checkValidity(challenge: challenge) { disposition, credentials in
-                continuation.resume(returning: (disposition, credentials))
+            checkValidity(challenge: challenge) { certificateValidationResult in
+                continuation.resume(returning: certificateValidationResult)
             }
         }
     }
