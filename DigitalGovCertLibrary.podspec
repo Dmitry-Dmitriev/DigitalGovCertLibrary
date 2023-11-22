@@ -1,17 +1,15 @@
 Pod::Spec.new do |s|
   s.name                = 'DigitalGovCertLibrary'
   s.version             = '1.0.0'
-  s.summary             = 'iOS SDK of myTarget Advertising Network'
-  s.description         = 'The myTarget Advertising Network allows developers to monetize their websites and mobile apps using myTarget ads'
-  s.homepage            = 'https://target.my.com'
-  s.readme              = 'https://raw.githubusercontent.com/myTargetSDK/mytarget-ios/master/README.md'
-  s.changelog           = 'https://raw.githubusercontent.com/myTargetSDK/mytarget-ios/master/CHANGELOG.md'
-  s.documentation_url   = 'https://target.my.com/partners/help/sdk'
-  s.license             = { :type => 'LGPL-3.0'}
-  s.authors             = { 'My.com' => 'sdk_mytarget@corp.my.com' }
+  s.summary             = 'DigitalGovCertLibrary for iOS'
+  s.homepage            = 'https://github.com/myTargetSDK/DigitalGovCertLibrary-iOS'
+  s.readme              = 'https://github.com/myTargetSDK/DigitalGovCertLibrary-iOS/tree/main/README.md'
+  s.documentation_url   = 'https://github.com/myTargetSDK/DigitalGovCertLibrary-iOS'
+  s.license             = { :type => 'MIT'}
+  s.authors             = { 'vk.team' => 'digital-gov-cert-library-ios@vk.team' }
   s.platform            = :ios, '12.4'
   s.cocoapods_version   = '>= 1.10.0'
-  s.source              = { :git => 'git@github.com:Dmitry-Dmitriev/DigitalGovCertLibrary.git', :tag => "1.0.0" }
+  s.source              = { :git => 'git@github.com:Dmitry-Dmitriev/DigitalGovCertLibrary.git', :tag => s.version }
 #  s.source_files        = 'Sources/**/*.{h,m,swift}'
   s.resource_bundles = {
    "DGCLResources" => [
