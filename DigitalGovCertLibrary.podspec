@@ -13,7 +13,8 @@ Pod::Spec.new do |s|
 #  s.source_files        = 'Sources/**/*.{h,m,swift}'
   s.resource_bundles = {
    "DGCLResources" => [
-			"Sources/Resources/Certs/*"
+			"Sources/Resources/Certs/*",
+			"Sources/Resources/Localization/*",
 		]
 }
   s.subspec 'Private' do |ss|
