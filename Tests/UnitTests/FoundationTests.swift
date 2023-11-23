@@ -1,5 +1,3 @@
-// swift-tools-version:5.3
-
 //  DigitalGovCertLibrary
 
 //  Copyright (c) 2023-Present DigitalGovCertLibrary Team - https://github.com/myTargetSDK/DigitalGovCertLibrary-iOS
@@ -22,36 +20,17 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-import PackageDescription
+import XCTest
+import Foundation
 
-let package = Package(
-	name: "DigitalGovCertLibrary",
-	platforms:
-	[
-        .iOS("12.4")
-	],
-	products:
-	[
-		.library(
-			name: "DigitalGovCertLibrary",
-            type: .dynamic,
-			targets: ["DigitalGovCertLibrary"])
-	],
-	targets:
-	[
-		.target(name: "DigitalGovCertLibrary",
-                path: "Sources",
-                resources: [
-                    .copy("Resources/Localization/Localizable.strings"),
-                    .copy("Resources/Certs/Readme.md"),
-                    .copy("Resources/Certs/russiantrustedca.der"),
-                    .copy("Resources/Certs/russiantrustedca.pem"),
-                    .copy("Resources/Certs/russiantrustedca.crt"),
-                    .copy("Resources/Certs/russiantrustedrootca.cer"),
-                    .copy("Resources/Certs/russiantrustedsubca.cer")
-                ]),
-        .testTarget(name: "UnitTests",
-                    dependencies: ["DigitalGovCertLibrary"],
-                    path: "Tests")
-        ]
-)
+final class FoundationTests: XCTestCase {
+    func testExtraArgumentsInStringFormat() {
+        let formatWithTwoPlaceHolders = "It is not possible to read the file %@ at path %@."
+        let fakeFileName = "fakefile.crt"
+        let fakeFilePath = "/fakepath/dir/dir/dir"
+        let extraArg = "something"
+        let stringWithThreeArguments = String(format: formatWithTwoPlaceHolders, fakeFileName, fakeFilePath, extraArg)
+        let expectedResult = "It is not possible to read the file \(fakeFileName) at path \(fakeFilePath)."
+        XCTAssertEqual(stringWithThreeArguments, expectedResult)
+    }
+}

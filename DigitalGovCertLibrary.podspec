@@ -23,6 +23,9 @@ Pod::Spec.new do |s|
   s.subspec 'Public' do |ss|
     ss.source_files = 'Sources/Public/**/*.{h,m,swift}'
   end
+  s.test_spec 'DGCLTests' do |test_spec|
+    test_spec.source_files = 'Tests/**/*.{h,m,swift}'
+  end
   s.requires_arc        = true
   s.swift_version = '5.0'
 end
