@@ -1,5 +1,3 @@
-// swift-tools-version:5.3
-
 //  DigitalGovCertLibrary
 
 //  Copyright (c) 2023-Present DigitalGovCertLibrary Team - https://github.com/myTargetSDK/DigitalGovCertLibrary-iOS
@@ -22,33 +20,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-import PackageDescription
+import Foundation
 
-let package = Package(
-	name: "DigitalGovCertLibrary",
-	platforms:
-	[
-        .iOS("12.4")
-	],
-	products:
-	[
-		.library(
-			name: "DigitalGovCertLibrary",
-            type: .dynamic,
-			targets: ["DigitalGovCertLibrary"])
-	],
-	targets:
-	[
-		.target(name: "DigitalGovCertLibrary",
-                path: "Sources",
-                resources: [
-                    .copy("Resources/Localization/Localizable.strings"),
-                    .copy("Resources/Certs/Readme.md"),
-                    .copy("Resources/Certs/russiantrustedca.der"),
-                    .copy("Resources/Certs/russiantrustedca.pem"),
-                    .copy("Resources/Certs/russiantrustedca.crt"),
-                    .copy("Resources/Certs/russiantrustedrootca.cer"),
-                    .copy("Resources/Certs/russiantrustedsubca.cer")
-                ])
-        ]
-)
+extension DGError.File: CustomNSError {
+    /// error code of DGError.File error
+    public var errorCode: Int {
+        dgError.errorCode
+    }
+}
