@@ -1,5 +1,3 @@
-// swift-tools-version:5.3
-
 //  DigitalGovCertLibrary
 
 //  Copyright (c) 2023-Present DigitalGovCertLibrary Team - https://github.com/myTargetSDK/DigitalGovCertLibrary-iOS
@@ -22,36 +20,31 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-import PackageDescription
+import Foundation
+@testable import DigitalGovCertLibrary
 
-let package = Package(
-	name: "DigitalGovCertLibrary",
-	platforms:
-	[
-        .iOS("12.4")
-	],
-	products:
-	[
-		.library(
-			name: "DigitalGovCertLibrary",
-            type: .dynamic,
-			targets: ["DigitalGovCertLibrary"])
-	],
-	targets:
-	[
-		.target(name: "DigitalGovCertLibrary",
-                path: "Sources",
-                resources: [
-                    .copy("Resources/Localization/Localizable.strings"),
-                    .copy("Resources/Certs/Readme.md"),
-                    .copy("Resources/Certs/russiantrustedca.der"),
-                    .copy("Resources/Certs/russiantrustedca.pem"),
-                    .copy("Resources/Certs/russiantrustedca.crt"),
-                    .copy("Resources/Certs/russiantrustedrootca.cer"),
-                    .copy("Resources/Certs/russiantrustedsubca.cer")
-                ]),
-        .testTarget(name: "UnitTests",
-                    dependencies: ["DigitalGovCertLibrary"],
-                    path: "Tests")
-        ]
-)
+struct CrtFile {
+    let name: String
+    let ext: CertExtension
+
+    private init(name: String, ext: CertExtension) {
+        self.name = name
+        self.ext = ext
+    }
+}
+
+extension CrtFile {
+    static let cerRoot = CrtFile(name: .russiantrustedrootca, ext: .cer)
+    static let cerSub = CrtFile(name: .russiantrustedsubca, ext: .cer)
+    static let crt = CrtFile(name: .russiantrustedca, ext: .crt)
+    static let der = CrtFile(name: .russiantrustedca, ext: .der)
+    static let pem = CrtFile(name: .russiantrustedca, ext: .pem)
+    static let invalid = CrtFile(name: .invalidCrtFilename, ext: .cer)
+}
+
+private extension String {
+    static let russiantrustedrootca = "russiantrustedrootca"
+    static let russiantrustedsubca = "russiantrustedsubca"
+    static let russiantrustedca = "russiantrustedca"
+    static let invalidCrtFilename = "invalidCrtFilename"
+}
