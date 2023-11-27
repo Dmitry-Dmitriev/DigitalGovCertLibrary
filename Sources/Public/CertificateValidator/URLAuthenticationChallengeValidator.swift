@@ -27,7 +27,29 @@ import Foundation
     func checkValidity(challenge: URLAuthenticationChallenge,
                        completionHandler: @escaping (CertificateValidationResult?) -> Void)
 
-    @available(iOS 13.0, *)
-    @available(OSX 10.15, *)
-    func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async -> CertificateValidationResult?
+    func checkValidity(_ challenge: URLAuthenticationChallenge,
+                       completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
+}
+
+@available(iOS 13.0, *)
+@available(OSX 10.15, *)
+extension URLAuthenticationChallengeValidator {
+    /// Async / await version of checkValidity(challenge: completionHandler: )
+    func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async -> CertificateValidationResult? {
+        await withCheckedContinuation { continuation in
+            checkValidity(challenge: challenge) { certificateValidationResult in
+                continuation.resume(returning: certificateValidationResult)
+            }
+        }
+
+    }
+
+    /// Async / await version of checkValidity(_ challenge: completionHandler: )
+    func checkValidity(_ challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+        await withCheckedContinuation { continuation in
+            checkValidity(challenge) { disposition, credential in
+                continuation.resume(returning: (disposition, credential))
+            }
+        }
+    }
 }

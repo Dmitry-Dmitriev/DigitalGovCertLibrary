@@ -61,6 +61,7 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
     @objc
     public func checkValidity(challenge: URLAuthenticationChallenge,
                               completionHandler: @escaping (CertificateValidationResult?) -> Void) {
+
         oneTimeLoader.load { result in
             guard !result.isFailed else {
                 completionHandler(nil)
@@ -77,14 +78,16 @@ public final class DigitalGovCertificateValidator: NSObject, URLAuthenticationCh
         }
     }
 
-    /// Async / await version of checkValidity(challenge: completionHandler: )
-    @available(iOS 13.0, *)
-    @available(OSX 10.15, *)
-    public func checkValidity(ofChallenge challenge: URLAuthenticationChallenge) async -> CertificateValidationResult? {
-        await withCheckedContinuation { continuation in
-            checkValidity(challenge: challenge) { certificateValidationResult in
-                continuation.resume(returning: certificateValidationResult)
-            }
+    /// Convenience method to direct call from URLSessionDelegate or WKNavigationDelegate
+    /// You can write similiar extension with custom converting from
+    /// CertificateValidationResult to (URLSession.AuthChallengeDisposition, URLCredential?)
+    @objc
+    public func checkValidity(_ challenge: URLAuthenticationChallenge,
+                              completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        checkValidity(challenge: challenge) { result  in
+            let authChallengeResult = result.authChallengeResult
+            completionHandler(authChallengeResult.disposition,
+                              authChallengeResult.credential)
         }
     }
 }
