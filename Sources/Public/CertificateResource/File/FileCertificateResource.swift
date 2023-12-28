@@ -23,7 +23,8 @@
 import Foundation
 
 /// Certificate resource that can be loaded from file
-@objc public final class FileCertificateResource: NSObject, CertificateLoadableResource {
+@objc(DGFileCertificateResource)
+public final class FileCertificateResource: NSObject, CertificateLoadableResource {
     let certBundle: Bundle
     let certName: String
     let certExtension: CertExtension

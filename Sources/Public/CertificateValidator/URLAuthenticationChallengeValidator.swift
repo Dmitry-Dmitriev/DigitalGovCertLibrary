@@ -23,7 +23,8 @@
 import Foundation
 
 /// Any object that can validate authenticate challenge
-@objc public protocol URLAuthenticationChallengeValidator: NSObjectProtocol {
+@objc(DGURLAuthenticationChallengeValidator)
+public protocol URLAuthenticationChallengeValidator: NSObjectProtocol {
     func checkValidity(challenge: URLAuthenticationChallenge,
                        completionHandler: @escaping (CertificateValidationResult?) -> Void)
 

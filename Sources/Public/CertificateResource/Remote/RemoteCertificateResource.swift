@@ -23,7 +23,8 @@
 import Foundation
 
 /// Certificate resource that can be loaded from network
-@objc open class RemoteCertificateResource: NSObject, WebRequestProvider, CertificateLoadableResource {
+@objc(DGRemoteCertificateResource)
+open class RemoteCertificateResource: NSObject, WebRequestProvider, CertificateLoadableResource {
     let urlString: String
 
     /// Designated initializer

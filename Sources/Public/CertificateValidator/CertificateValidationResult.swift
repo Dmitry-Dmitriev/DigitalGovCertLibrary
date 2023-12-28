@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc(CertificateValidationResult)
+@objc(DGCertificateValidationResult)
 public final class CertificateValidationResult: NSObject {
     /// the value of URLAuthenticationChallenge.protectionSpace.serverTrust
     @objc

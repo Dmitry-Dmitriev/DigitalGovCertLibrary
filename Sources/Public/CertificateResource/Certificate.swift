@@ -23,7 +23,8 @@
 import Foundation
 
 /// Wrapper to use SecCertificate array in obj-c
-@objc public final class Certificate: NSObject {
+@objc(DGCertificate)
+public final class Certificate: NSObject {
     /// SecCertificate property
     @objc public let certificate: SecCertificate
 

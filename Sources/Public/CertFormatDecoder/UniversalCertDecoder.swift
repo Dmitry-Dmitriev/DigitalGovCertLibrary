@@ -23,7 +23,8 @@
 import Foundation
 
 /// Universal object that unions different ways of decoding Certificate
-@objc public final class UniversalCertDecoder: NSObject, CertificateDecoder {
+@objc(DGUniversalCertDecoder)
+public final class UniversalCertDecoder: NSObject, CertificateDecoder {
     private let derDecoder: DerDecoder = DerFormatCertDecoder()
     private let pemDecoder: PemDecoder = PemFormatCertDecoder()
 
